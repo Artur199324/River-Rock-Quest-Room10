@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 class UserPreferences {
@@ -10,85 +8,86 @@ class UserPreferences {
     private let currentItemKey = "currentItemKey"
     private let itemsKey = "itemsKey"
     private let logKey = "logKey"
-     
-     
-     func saveCurrentItem(_ item: Int) {
-         UserDefaults.standard.set(item, forKey: currentItemKey)
-         addItemToList(item)
-     }
-     
-     
-     func getCurrentItem() -> Int? {
-         let value = UserDefaults.standard.integer(forKey: currentItemKey)
-         return value != 0 ? value : nil
-     }
-     
+
+    init() {
+        // Установка значений по умолчанию
+        UserDefaults.standard.register(defaults: [
+            usernameKey: "TestUser",
+            passwordKey: "test123123",
+            genderKey: 0, // Например, 0 - не указан
+            currentItemKey: 0
+        ])
+    }
+    
+    func saveCurrentItem(_ item: Int) {
+        UserDefaults.standard.set(item, forKey: currentItemKey)
+        addItemToList(item)
+    }
+    
+    func getCurrentItem() -> Int? {
+        let value = UserDefaults.standard.integer(forKey: currentItemKey)
+        return value != 0 ? value : nil
+    }
+    
     func getItemsCount() -> Int {
         return getItems()?.count ?? 0
     }
-     private func addItemToList(_ item: Int) {
-         var items = getItems() ?? []
-         if !items.contains(item) {
-             items.append(item)
-             saveItems(items)
-         }
-     }
-     
-
-     private func saveItems(_ items: [Int]) {
-         UserDefaults.standard.set(items, forKey: itemsKey)
-     }
-     
-   
-     func getItems() -> [Int]? {
-         return UserDefaults.standard.array(forKey: itemsKey) as? [Int]
-     }
+    
+    private func addItemToList(_ item: Int) {
+        var items = getItems() ?? []
+        if !items.contains(item) {
+            items.append(item)
+            saveItems(items)
+        }
+    }
+    
+    private func saveItems(_ items: [Int]) {
+        UserDefaults.standard.set(items, forKey: itemsKey)
+    }
+    
+    func getItems() -> [Int]? {
+        return UserDefaults.standard.array(forKey: itemsKey) as? [Int]
+    }
     
     func saveLog(_ items: Int) {
         UserDefaults.standard.set(items, forKey: logKey)
-         UserDefaults.standard.synchronize()
+        UserDefaults.standard.synchronize()
     }
     
-  
     func getLog() -> Int? {
         return UserDefaults.standard.integer(forKey: logKey)
     }
     
-     
-
     func saveCredentials(username: String, password: String) {
         UserDefaults.standard.set(username, forKey: usernameKey)
         UserDefaults.standard.set(password, forKey: passwordKey)
         UserDefaults.standard.synchronize()
     }
     
-    func saveU(u:String){
+    func saveU(u: String) {
         UserDefaults.standard.set(u, forKey: uKey)
     }
     
-    func getU() -> String?{
+    func getU() -> String? {
         return UserDefaults.standard.string(forKey: uKey)
     }
     
-    func saveGender(gender:Int){
+    func saveGender(gender: Int) {
         UserDefaults.standard.set(gender, forKey: genderKey)
     }
-
-
+    
     func getUsername() -> String? {
         return UserDefaults.standard.string(forKey: usernameKey)
     }
-
-
-   
+    
     func getPassword() -> String? {
         return UserDefaults.standard.string(forKey: passwordKey)
     }
     
-    func getGender() ->Int?{
+    func getGender() -> Int? {
         return UserDefaults.standard.integer(forKey: genderKey)
     }
-
+    
     func clearCredentials() {
         UserDefaults.standard.set("", forKey: usernameKey)
         UserDefaults.standard.set("", forKey: passwordKey)
